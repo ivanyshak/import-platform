@@ -1,0 +1,9 @@
+= simple_form_for @import, html: { class: 'inline-form' } do |f|
+  %div
+    .col-sm-6
+      = f.input :title
+    .col-sm-6.mt-4
+      = f.input :attachment
+    %br
+
+    = f.button :submit, class: 'btn btn-primary'

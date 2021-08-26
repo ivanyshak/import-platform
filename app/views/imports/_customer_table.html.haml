@@ -1,0 +1,32 @@
+- if @customers.any?
+  .table-responsive
+    %table.table.table-striped
+      %tbody
+
+  .input-group
+    = form_tag(import_path(@import.id), method: "get", id: "search-form") do
+      = text_field_tag :query, params[:search], placeholder: "Search Posts", class: 'form-control'
+      %div.mt-2
+        = submit_tag "Search", class: 'btn btn-primary'
+  %h3.text-center
+    Customers
+  %table.table.table-striped.table-bordered.table-md{cellspacing: "0", width: "80%"}
+    %thead
+      %tr
+        %th.th-sm
+          First name
+        %th.th-sm
+          Last name
+        %th.th-sm
+          Email
+        %th.th-sm
+          Date of birth
+    %tbody
+      - customers.each do |item|
+        %tr
+          %td= item.first_name
+          %td= item.last_name
+          %td= item.email
+          %td= item.date_of_birth.try(:strftime, '%d.%m.%Y %H:%M')
+- else
+  %h3.text-center We do not have any customers yet

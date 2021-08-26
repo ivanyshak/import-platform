@@ -1,0 +1,42 @@
+%h1
+  Import details
+  = link_to 'Edit', edit_import_path(@import), class: 'btn btn-light'
+
+.table-responsive
+  %table.table.table-striped
+    %tbody
+      %tr
+        %th ID
+        %td= @import.id
+      %tr
+        %th Title
+        %td= @import.title
+      %tr
+        %th State
+        %td= @import.state
+      %tr
+        %th Created at
+        %td= @import.created_at.try(:strftime, '%d.%m.%Y %H:%M')
+      %tr
+        %th Started at
+        %td= @import.started_at.try(:strftime, '%d.%m.%Y %H:%M')
+      %tr
+        %th Completed at
+        %td= @import.completed_at.try(:strftime, '%d.%m.%Y %H:%M')
+      %tr
+        %th Success customers
+        %td= @import.customers.count
+      %tr
+        %th Failed customers
+        %td= @import.invalid_customers
+
+      - if @import.attachment.present?
+        %tr
+          - if @import.created?
+            %th= link_to 'Start Import', start_process_import_path(@import), method: :post, class: 'btn btn-primary'
+          - else
+            %th= link_to 'Delete Import', remove_customers_import_path(@import), method: :post, class: 'btn btn-danger', data: { confirm: 'Are you sure?' }
+          %td
+
+= render 'customer_table', customers: @customers
+

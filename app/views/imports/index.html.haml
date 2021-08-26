@@ -1,0 +1,47 @@
+%div.text-center
+  = link_to 'Import file', new_import_path, class: "btn btn-primary btn-lg"
+
+%br
+%br
+.input-group
+  = form_tag(imports_path, method: "get", id: "search-form") do
+    = text_field_tag :query, params[:search], placeholder: "Search Posts", class: 'form-control'
+    %div.mt-2
+      = submit_tag "Search", class: 'btn btn-primary'
+%br
+
+%table.table.table-striped.table-bordered.table-md{cellspacing: "0", width: "80%"}
+  %thead
+    %tr
+      %th.th-sm
+        Title
+      %th.th-sm
+        State
+      %th.th-sm
+        Started at
+      %th.th-sm
+        Completed at
+      %th.th-sm
+        File name
+      %th.th-sm
+        Created at
+      %th.th-sm
+        Actions
+  %tbody
+    - @imports.each do |item|
+      %tr
+        %td= item.title
+        %td= item.state
+        %td= item.started_at.try(:strftime, '%d.%m.%Y %H:%M')
+        %td= item.completed_at.try(:strftime, '%d.%m.%Y %H:%M')
+        %td= item.attachment.file&.filename
+        %td= item.created_at.try(:strftime, '%d.%m.%Y %H:%M')
+        %td
+          .dropdown
+            %button#dropdownMenuButton1.btn.btn-secondary.btn-sm.dropdown-toggle{"aria-expanded" => "false", "data-bs-toggle" => "dropdown", :typ => "button"}
+              Options
+            %ul.dropdown-menu{"aria-labelledby" => "dropdownMenuButton1"}
+              %li= link_to 'Details', import_path(item), class: 'dropdown-item'
+              %li= link_to 'Edit', edit_import_path(item), class: 'dropdown-item'
+              %li= link_to 'Destroy', import_path(item), class: 'dropdown-item', method: :delete, remote: true, data: { confirm: "Are you sure?" }
+    = paginate @imports
